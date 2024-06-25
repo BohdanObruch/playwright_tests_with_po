@@ -17,7 +17,7 @@ export class InventoryPage extends BaseSwagLabPage {
 
     get activeOption() { return this.page.locator('.active_option'); }
 
-    async newSortItem(value) {
+    async sortItemsBy(value) {
         await this.page.selectOption('.product_sort_container', value);
     }
 
@@ -30,28 +30,14 @@ export class InventoryPage extends BaseSwagLabPage {
     }
 
     async getInventoryItemsPrices() {
-        const prices = await this.page.$$eval(this.inventoryItemsPrice, (elements) => elements.map((element) => element.textContent));
+        const prices = await this.page.locator(this.inventoryItemsPrice).allTextContents();
 
         return prices.map((price) => parseFloat(price.replace('$', '')));
     }
 
     async getInventoryItemsNames() {
-        const cardNames = await this.page.$$eval(this.inventoryItemsName, (elements) => elements.map((element) => element.textContent));
+        const cardNames = await this.page.locator(this.inventoryItemsName).allTextContents();
 
         return cardNames.map((name) => name.toLowerCase());
-    }
-
-    async isSortedAlphabetically(array, isDescending = false) {
-        const sortedArray = [...array].sort();
-        if (isDescending) {
-            sortedArray.reverse();
-        }
-        return array.every((value, index) => value === sortedArray[index]);
-    }
-
-    async isSortedByPrice(array, isDescending = false) {
-        const sortedArray = [...array].sort((a, b) => (isDescending ? b - a : a - b));
-
-        return array.every((value, index) => value === sortedArray[index]);
     }
 }

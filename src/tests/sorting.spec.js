@@ -1,43 +1,45 @@
 const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
 
+async function isSortedAlphabetically(array, isDescending = false) {
+    const sortedArray = [...array].sort();
+    if (isDescending) {
+        sortedArray.reverse();
+    }
+    return array.every((value, index) => value === sortedArray[index]);
+}
+
+async function isSortedByPrice(array, isDescending = false) {
+    const sortedArray = [...array].sort((a, b) => (isDescending ? b - a : a - b));
+    return array.every((value, index) => value === sortedArray[index]);
+}
+
 test.describe('Sorting the inventory items', () => {
-    test('Sorting by name (A to Z)', async ({ inventoryPage }) => {
-        expect(await inventoryPage.getActiveOptionText())
-            .toBe('Name (A to Z)');
+    [
+        ['Name (A to Z)', 'az', isSortedAlphabetically, false],
+        ['Name (Z to A)', 'za', isSortedAlphabetically, true],
+    ].forEach(([optionText, sortValue, sortFunction, isDescending]) => {
+        test(`Sorting by ${optionText}`, async ({ inventoryPage }) => {
+            await inventoryPage.sortItemsBy(sortValue);
 
-        const cardNames = await inventoryPage.getInventoryItemsNames();
-        expect(await inventoryPage.isSortedAlphabetically(cardNames)).toBe(true);
+            expect(await inventoryPage.getActiveOptionText()).toBe(optionText);
+
+            const items = await inventoryPage.getInventoryItemsNames();
+            expect(await sortFunction(items, isDescending)).toBe(true);
+        });
     });
 
-    test('Sorting by name (Z to A)', async ({ inventoryPage }) => {
-        await inventoryPage.newSortItem('za');
+    [
+        ['Price (low to high)', 'lohi', isSortedByPrice, false],
+        ['Price (high to low)', 'hilo', isSortedByPrice, true],
+    ].forEach(([optionText, sortValue, sortFunction, isDescending]) => {
+        test(`Sorting by ${optionText}`, async ({ inventoryPage }) => {
+            await inventoryPage.sortItemsBy(sortValue);
 
-        expect(await inventoryPage.getActiveOptionText()).toBe('Name (Z to A)');
+            expect(await inventoryPage.getActiveOptionText()).toBe(optionText);
 
-        const cardNames = await inventoryPage.getInventoryItemsNames();
-        expect(await inventoryPage.isSortedAlphabetically(cardNames, true)).toBe(true);
-    });
-
-    test('Sorting by price (low to high)', async ({ inventoryPage }) => {
-        await inventoryPage.newSortItem('lohi');
-
-        expect(await inventoryPage.getActiveOptionText())
-            .toBe('Price (low to high)');
-
-        const prices = await inventoryPage.getInventoryItemsPrices();
-
-        expect(await inventoryPage.isSortedByPrice(prices)).toBe(true);
-    });
-
-    test('Sorting by price (high to low)', async ({ inventoryPage }) => {
-        await inventoryPage.newSortItem('hilo');
-
-        expect(await inventoryPage.getActiveOptionText())
-            .toBe('Price (high to low)');
-
-        const prices = await inventoryPage.getInventoryItemsPrices();
-
-        expect(await inventoryPage.isSortedByPrice(prices, true)).toBe(true);
+            const items = await inventoryPage.getInventoryItemsPrices();
+            expect(await sortFunction(items, isDescending)).toBe(true);
+        });
     });
 });
