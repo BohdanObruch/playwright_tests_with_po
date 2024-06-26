@@ -2,7 +2,6 @@ import { test as base } from '@playwright/test';
 import { LoginPage } from './pages/Login.page';
 import { InventoryPage } from './pages/Inventory.page';
 import { ShopingCartPage } from './pages/ShopingCart.page';
-import { username, password } from '../config/credentials';
 
 export const test = base.extend({
     loginPage: async ({ page }, use) => {
@@ -14,9 +13,4 @@ export const test = base.extend({
     shopingCartPage: async ({ page }, use) => {
         await use(new ShopingCartPage(page));
     },
-});
-
-test.beforeEach(async ({ loginPage }) => {
-    await loginPage.navigate();
-    await loginPage.performLogin(username, password);
 });
