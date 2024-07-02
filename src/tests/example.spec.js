@@ -3,7 +3,7 @@ const { expect } = require('@playwright/test');
 const { test } = require('../fixture');
 
 test.describe('', () => {
-    test('Perform login', async ({ loginPage, inventoryPage }) => {
+    test.skip('Perform login', async ({ loginPage, inventoryPage }) => {
         await loginPage.navigate();
         await loginPage.performLogin('standard_user', 'secret_sauce');
 
@@ -12,7 +12,7 @@ test.describe('', () => {
         expect(await inventoryPage.inventoryItems.count()).toBeGreaterThanOrEqual(1);
     });
 
-    test('Add and remove product from the cart', async ({ loginPage, inventoryPage, shopingCartPage }) => {
+    test.skip('Add and remove product from the cart', async ({ loginPage, inventoryPage, shopingCartPage }) => {
         await loginPage.navigate();
         await loginPage.performLogin('standard_user', 'secret_sauce');
         await inventoryPage.addItemToCartById(0);

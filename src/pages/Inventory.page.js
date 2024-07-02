@@ -13,6 +13,8 @@ export class InventoryPage extends BaseSwagLabPage {
 
     inventoryItemsPrice = '.inventory_item_price';
 
+    inventoryItemsDescription = '.inventory_item_desc';
+
     get sort() { return this.page.locator('.product_sort_container'); }
 
     get activeOption() { return this.page.locator('.active_option'); }
@@ -29,6 +31,10 @@ export class InventoryPage extends BaseSwagLabPage {
         await this.addItemToCartBtns.nth(id).click();
     }
 
+    async getInventoryItems() {
+        return this.inventoryItems.count();
+    }
+
     async getInventoryItemsPrices() {
         const prices = await this.page.locator(this.inventoryItemsPrice).allTextContents();
 
@@ -39,5 +45,19 @@ export class InventoryPage extends BaseSwagLabPage {
         const cardNames = await this.page.locator(this.inventoryItemsName).allTextContents();
 
         return cardNames.map((name) => name.toLowerCase());
+    }
+
+    async getInventoryItemsDescriptions() {
+        const cardDescriptions = await this.page.locator(this.inventoryItemsDescription).allTextContents();
+
+        return cardDescriptions.map((description) => description.toLowerCase());
+    }
+
+    async addItemsToCart(randomItems) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const item of randomItems) {
+        // eslint-disable-next-line no-await-in-loop
+            await this.addItemToCartById(item);
+        }
     }
 }
