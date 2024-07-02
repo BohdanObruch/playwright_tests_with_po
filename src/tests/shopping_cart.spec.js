@@ -13,12 +13,18 @@ test.describe('Adding random items to the shopping cart', () => {
 
         await inventoryPage.addItemsToCart(randomItems);
 
+        const cartItemsNames = await inventoryPage.getInventoryItemsNames();
         const cartItemsDescriptions = await inventoryPage.getInventoryItemsDescriptions();
+        const inventoryItemsPrices = await inventoryPage.getInventoryItemsPrices();
 
         await baseSwagLabPage.clickOnShopingCart;
 
+        const shoppingCartItemsNames = await inventoryPage.getInventoryItemsNames();
         const shoppingCartItemsDescriptions = await inventoryPage.getInventoryItemsDescriptions();
+        const shoppingCartItemsPrices = await inventoryPage.getInventoryItemsPrices();
 
+        expect(cartItemsNames).toEqual(shoppingCartItemsNames);
         expect(cartItemsDescriptions).toEqual(shoppingCartItemsDescriptions);
+        expect(inventoryItemsPrices).toEqual(shoppingCartItemsPrices);
     });
 });
