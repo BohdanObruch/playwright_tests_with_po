@@ -4,12 +4,16 @@ export class BaseSwagLabPage extends BasePage {
     // header
     get mainMenuBtn() { return this.page.locator('TBD'); }
 
-    get shopingCart() { return this.page.locator('.shopping_cart_link'); }
+    get shoppingCart() { return this.page.locator('.shopping_cart_link'); }
 
-    get shopingCartBadge() { return this.page.locator('.shopping_cart_badge'); }
+    get shoppingCartBadge() { return this.page.locator('.shopping_cart_badge'); }
 
     async getNumberOfItemsInCart() {
-        return this.shopingCartBadge.textContent();
+        return this.shoppingCartBadge.textContent();
+    }
+
+    async clickOnShoppingCart() {
+        await this.shoppingCart.click();
     }
 
     async clickOnShopingCart() {
