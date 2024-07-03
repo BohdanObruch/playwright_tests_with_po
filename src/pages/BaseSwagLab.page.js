@@ -15,8 +15,4 @@ export class BaseSwagLabPage extends BasePage {
     async clickOnShoppingCart() {
         await this.shoppingCart.click();
     }
-
-    async clickOnShopingCart() {
-        await this.shopingCart.click();
-    }
 }
