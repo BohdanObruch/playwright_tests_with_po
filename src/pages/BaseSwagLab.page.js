@@ -11,8 +11,4 @@ export class BaseSwagLabPage extends BasePage {
     async getNumberOfItemsInCart() {
         return this.shoppingCartBadge.textContent();
     }
-
-    async clickOnShoppingCart() {
-        await this.shoppingCart.click();
-    }
 }

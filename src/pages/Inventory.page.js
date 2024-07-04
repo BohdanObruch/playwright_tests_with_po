@@ -31,32 +31,39 @@ export class InventoryPage extends BaseSwagLabPage {
         await this.addItemToCartBtns.nth(id).click();
     }
 
-    async getInventoryItems() {
-        return this.inventoryItems.count();
-    }
-
-    async getInventoryItemsPrices() {
+    async getInventoryItemsAllPrices() {
         const prices = await this.page.locator(this.inventoryItemsPrice).allTextContents();
 
         return prices.map((price) => parseFloat(price.replace('$', '')));
     }
 
-    async getInventoryItemsNames() {
+    async getInventoryItemsAllNames() {
         const cardNames = await this.page.locator(this.inventoryItemsName).allTextContents();
 
         return cardNames.map((name) => name.toLowerCase());
     }
 
-    async getInventoryItemsDescriptions() {
-        const cardDescriptions = await this.page.locator(this.inventoryItemsDescription).allTextContents();
+    async getInventoryItemsAllDescriptions() {
+        return await this.page.locator(this.inventoryItemsDescription).allTextContents();
+    }
 
-        return cardDescriptions.map((description) => description.toLowerCase());
+    async getInventoryItemsPrices(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => {
+            const priceText = await this.page.locator(this.inventoryItemsPrice).nth(index).textContent();
+            return parseFloat(priceText.replace('$', ''));
+        }));
+    }
+
+    async getInventoryItemsNames(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => await this.page.locator(this.inventoryItemsName).nth(index).textContent()));
+    }
+
+    async getInventoryItemsDescriptions(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => await this.page.locator(this.inventoryItemsDescription).nth(index).textContent()));
     }
 
     async addItemsToCart(randomItems) {
-        // eslint-disable-next-line no-restricted-syntax
         for (const item of randomItems) {
-        // eslint-disable-next-line no-await-in-loop
             await this.addItemToCartById(item);
         }
     }

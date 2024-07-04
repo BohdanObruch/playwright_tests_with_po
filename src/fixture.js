@@ -11,7 +11,7 @@ export const test = base.extend({
     inventoryPage: async ({ page }, use) => {
         await use(new InventoryPage(page));
     },
-    shopingCartPage: async ({ page }, use) => {
+    shoppingCartPage: async ({ page }, use) => {
         await use(new ShoppingCartPage(page));
     },
     baseSwagLabPage: async ({ page }, use) => {
