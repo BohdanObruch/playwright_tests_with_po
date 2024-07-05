@@ -44,4 +44,18 @@ export class ShoppingCartPage extends BaseSwagLabPage {
     async getItemsAllDescriptions() {
         return await this.page.locator(this.itemsDescription).allTextContents();
     }
+
+    async getItemsDetails() {
+        const [names, descriptions, prices] = await Promise.all([
+            this.getItemsAllNames(),
+            this.getItemsAllDescriptions(),
+            this.getItemsAllPrices(),
+        ]);
+
+        return names.map((name, index) => ({
+            name,
+            description: descriptions[index],
+            price: prices[index],
+        }));
+    }
 }

@@ -62,6 +62,20 @@ export class InventoryPage extends BaseSwagLabPage {
         return await Promise.all(selectedItemsIndexes.map(async (index) => await this.page.locator(this.inventoryItemsDescription).nth(index).textContent()));
     }
 
+    async getItemsDetails(selectedItemsIndexes) {
+        const details = await Promise.all([
+            this.getInventoryItemsNames(selectedItemsIndexes),
+            this.getInventoryItemsDescriptions(selectedItemsIndexes),
+            this.getInventoryItemsPrices(selectedItemsIndexes),
+        ]);
+
+        return details[0].map((name, index) => ({
+            name,
+            description: details[1][index],
+            price: details[2][index],
+        }));
+    }
+
     async addItemsToCart(randomItems) {
         for (const item of randomItems) {
             await this.addItemToCartById(item);

@@ -16,18 +16,12 @@ test.describe('Adding random items to the shopping cart', () => {
 
         await inventoryPage.addItemsToCart(randomItems);
 
-        const cartItemsNames = await inventoryPage.getInventoryItemsNames(randomItems);
-        const cartItemsDescriptions = await inventoryPage.getInventoryItemsDescriptions(randomItems);
-        const cartItemsPrices = await inventoryPage.getInventoryItemsPrices(randomItems);
+        const cartItemsDetails = await inventoryPage.getItemsDetails(randomItems);
 
         await baseSwagLabPage.shoppingCart.click();
 
-        const shoppingCartItemsNames = await shoppingCartPage.getItemsAllNames();
-        const shoppingCartItemsDescriptions = await shoppingCartPage.getItemsAllDescriptions();
-        const shoppingCartItemsPrices = await shoppingCartPage.getItemsAllPrices();
+        const shoppingCartItemsDetails = await shoppingCartPage.getItemsDetails();
 
-        deepEqual(cartItemsNames, shoppingCartItemsNames);
-        deepEqual(cartItemsDescriptions, shoppingCartItemsDescriptions);
-        deepEqual(cartItemsPrices, shoppingCartItemsPrices);
+        deepEqual(cartItemsDetails, shoppingCartItemsDetails);
     });
 });
