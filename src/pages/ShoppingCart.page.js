@@ -13,6 +13,8 @@ export class ShoppingCartPage extends BaseSwagLabPage {
 
     itemsDescription = '.inventory_item_desc';
 
+    get checkoutButton() { return this.page.locator('#checkout'); }
+
     get headerTitle() { return this.page.locator('.title'); }
 
     get cartItems() { return this.page.locator(this.cartItemSelector); }

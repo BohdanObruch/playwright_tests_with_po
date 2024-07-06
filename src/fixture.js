@@ -3,6 +3,7 @@ import { LoginPage } from './pages/Login.page';
 import { InventoryPage } from './pages/Inventory.page';
 import { ShoppingCartPage } from './pages/ShoppingCart.page';
 import { BaseSwagLabPage } from './pages/BaseSwagLab.page';
+import { CheckoutPage } from './pages/Checkout.page';
 
 export const test = base.extend({
     loginPage: async ({ page }, use) => {
@@ -16,5 +17,8 @@ export const test = base.extend({
     },
     baseSwagLabPage: async ({ page }, use) => {
         await use(new BaseSwagLabPage(page));
+    },
+    checkoutPage: async ({ page }, use) => {
+        await use(new CheckoutPage(page));
     },
 });
