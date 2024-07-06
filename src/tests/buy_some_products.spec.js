@@ -3,6 +3,7 @@ const deepEqual = require('deep-equal');
 const { test } = require('../fixture');
 const { randomChoiceItems } = require('../utils/choice_random_items');
 const { standardUser } = require('../../config/credentials');
+const { generateRandomData } = require('../utils/random_data');
 
 test.describe('Adding random items to the shopping cart', () => {
     test('Add and verify items', async ({
@@ -22,7 +23,9 @@ test.describe('Adding random items to the shopping cart', () => {
 
         await shoppingCartPage.checkoutButton.click();
 
-        await checkoutPage.fillCheckoutForm();
+        const { firstName, lastName, zipCode } = generateRandomData();
+
+        await checkoutPage.fillCheckoutForm(firstName, lastName, zipCode);
 
         const checkoutItemsDetails = await checkoutPage.getItemsDetails();
 

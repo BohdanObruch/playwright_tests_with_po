@@ -18,9 +18,7 @@ export class CheckoutPage extends ShoppingCartPage {
 
     get continueButton() { return this.page.locator('#continue'); }
 
-    async fillCheckoutForm() {
-        const { firstName, lastName, zipCode } = generateRandomData();
-
+    async fillCheckoutForm(firstName, lastName, zipCode) {
         await this.firstName.fill(firstName);
         await this.lastName.fill(lastName);
         await this.zipCode.fill(zipCode);
