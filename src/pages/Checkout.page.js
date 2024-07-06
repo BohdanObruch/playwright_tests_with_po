@@ -1,5 +1,4 @@
 const { ShoppingCartPage } = require('./ShoppingCart.page');
-const { generateRandomData } = require('../utils/random_data');
 
 export class CheckoutPage extends ShoppingCartPage {
     url = '/checkout-step-one.html';
