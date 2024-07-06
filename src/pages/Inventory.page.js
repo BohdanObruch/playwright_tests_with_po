@@ -13,6 +13,8 @@ export class InventoryPage extends BaseSwagLabPage {
 
     inventoryItemsPrice = '.inventory_item_price';
 
+    inventoryItemsDescription = '.inventory_item_desc';
+
     get sort() { return this.page.locator('.product_sort_container'); }
 
     get activeOption() { return this.page.locator('.active_option'); }
@@ -29,15 +31,54 @@ export class InventoryPage extends BaseSwagLabPage {
         await this.addItemToCartBtns.nth(id).click();
     }
 
-    async getInventoryItemsPrices() {
+    async getInventoryItemsAllPrices() {
         const prices = await this.page.locator(this.inventoryItemsPrice).allTextContents();
 
         return prices.map((price) => parseFloat(price.replace('$', '')));
     }
 
-    async getInventoryItemsNames() {
+    async getInventoryItemsAllNames() {
         const cardNames = await this.page.locator(this.inventoryItemsName).allTextContents();
 
         return cardNames.map((name) => name.toLowerCase());
+    }
+
+    async getInventoryItemsAllDescriptions() {
+        return await this.page.locator(this.inventoryItemsDescription).allTextContents();
+    }
+
+    async getInventoryItemsPrices(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => {
+            const priceText = await this.page.locator(this.inventoryItemsPrice).nth(index).textContent();
+            return parseFloat(priceText.replace('$', ''));
+        }));
+    }
+
+    async getInventoryItemsNames(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => await this.page.locator(this.inventoryItemsName).nth(index).textContent()));
+    }
+
+    async getInventoryItemsDescriptions(selectedItemsIndexes) {
+        return await Promise.all(selectedItemsIndexes.map(async (index) => await this.page.locator(this.inventoryItemsDescription).nth(index).textContent()));
+    }
+
+    async getItemsDetails(selectedItemsIndexes) {
+        const details = await Promise.all([
+            this.getInventoryItemsNames(selectedItemsIndexes),
+            this.getInventoryItemsDescriptions(selectedItemsIndexes),
+            this.getInventoryItemsPrices(selectedItemsIndexes),
+        ]);
+
+        return details[0].map((name, index) => ({
+            name,
+            description: details[1][index],
+            price: details[2][index],
+        }));
+    }
+
+    async addItemsToCart(randomItems) {
+        for (const item of randomItems) {
+            await this.addItemToCartById(item);
+        }
     }
 }

@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@playwright/test": "^1.37.1"
+    "@playwright/test": "^1.37.1",
+    "deep-equal": "^2.2.3"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
