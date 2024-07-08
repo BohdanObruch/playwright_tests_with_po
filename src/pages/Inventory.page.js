@@ -28,7 +28,7 @@ export class InventoryPage extends BaseSwagLabPage {
     }
 
     async addItemToCartById(id) {
-        await this.addItemToCartBtns.nth(id).click();
+        await this.inventoryItems.nth(id).locator(this.addItemToCartBtns).click();
     }
 
     async getInventoryItemsAllPrices() {

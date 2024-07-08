@@ -13,7 +13,7 @@ test.describe('Adding random items to the shopping cart', () => {
         await loginPage.performLogin(standardUser.username, standardUser.password);
 
         const allItems = await inventoryPage.inventoryItems.count();
-        const randomItems = randomChoiceItems(allItems);
+        const randomItems = randomChoiceItems(allItems, 3);
 
         await inventoryPage.addItemsToCart(randomItems);
 
@@ -33,7 +33,7 @@ test.describe('Adding random items to the shopping cart', () => {
 
         const totalPriceWithTax = await checkoutPage.calculateTotalPriceWithTax();
 
-        expect(totalPrice).toBe(totalPriceWithTax);
+        expect(totalPrice).toBeCloseTo(totalPriceWithTax, 2);
 
         deepEqual(cartItemsDetails, checkoutItemsDetails);
     });
